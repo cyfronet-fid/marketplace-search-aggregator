@@ -1,0 +1,5 @@
+if command -v overmind foo >/dev/null 2>&1; then
+  overmind start -f Procfile.dev
+else
+  foreman start -f Procfile.dev
+fi
