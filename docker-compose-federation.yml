@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  node_a_mp:
+    build:
+      context: https://github.com/cyfronet-fid/whitelabel-marketplace.git
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - elasticsearch
+      - redis
+      - activemq
+    environment:
+      DATABASE_URL: postgres://user:pass@postgres:5432/node_a_db
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      REDIS_URL: redis://redis:6379
+      ACTIVEMQ_URL: tcp://activemq:61616
+    ports:
+      - "3001:3000"
+
+  node_b_mp:
+    build:
+      context: https://github.com/cyfronet-fid/whitelabel-marketplace.git
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - elasticsearch
+      - redis
+      - activemq
+    environment:
+      DATABASE_URL: postgres://user:pass@postgres:5432/node_b_db
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      REDIS_URL: redis://redis:6379
+      ACTIVEMQ_URL: tcp://activemq:61616
+    ports:
+      - "3002:3000"
+
+  postgres:
+    image: postgres:16.4
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  el:
+    image: arm64v8/elasticsearch:7.8.0
+    ports:
+      - "127.0.0.1:9200:9200"
+      - "127.0.0.1:9300:9300"
+  redis:
+    image: arm64v8/redis:7.2.4
+    ports:
+      - "127.0.0.1:6379:6379"
+    networks:
+      - mp-local
+  activemq:
+    image: apache/activemq-artemis:latest
+    ports:
+      - "127.0.0.1:61613:61613"
+    networks:
+      - mp-local
+
+volumes:
+  pgdata:
