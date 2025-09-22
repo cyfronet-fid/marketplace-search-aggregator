@@ -261,10 +261,13 @@ GEM
       rack (>= 3.1.0)
       redis-client (>= 0.23.2)
     spring (4.4.0)
-    sqlite3 (1.7.3-aarch64-linux)
-    sqlite3 (1.7.3-arm-linux)
-    sqlite3 (1.7.3-arm64-darwin)
-    sqlite3 (1.7.3-x86_64-linux)
+    sqlite3 (2.7.4-aarch64-linux-gnu)
+    sqlite3 (2.7.4-aarch64-linux-musl)
+    sqlite3 (2.7.4-arm-linux-gnu)
+    sqlite3 (2.7.4-arm-linux-musl)
+    sqlite3 (2.7.4-arm64-darwin)
+    sqlite3 (2.7.4-x86_64-linux-gnu)
+    sqlite3 (2.7.4-x86_64-linux-musl)
     stringio (3.1.7)
     syntax_tree (6.3.0)
       prettier_print (>= 1.2.0)
@@ -317,7 +320,7 @@ DEPENDENCIES
   rspec-rails
   sidekiq
   spring
-  sqlite3 (~> 1.4)
+  sqlite3 (~> 2.7)
 
 RUBY VERSION
    ruby 3.3.6p108
