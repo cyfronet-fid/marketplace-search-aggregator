@@ -38,7 +38,7 @@ class DataAggregatorService
         .map do |e|
           if e.is_a?(Hash)
             name = (e[:name] || e["name"] || e[:url] || e["url"]).to_s
-            url  = (e[:url] || e["url"] || e[:name] || e["name"] || name).to_s
+            url = (e[:url] || e["url"] || e[:name] || e["name"] || name).to_s
             { name: name, url: url }
           else
             s = e.to_s
@@ -110,13 +110,7 @@ class DataAggregatorService
             url = endpoint.is_a?(Hash) ? (endpoint[:url] || endpoint["url"]).to_s : endpoint.to_s
             name = endpoint.is_a?(Hash) ? ((endpoint[:name] || endpoint["name"]) || url).to_s : url
             response = @http_client.get(url, api_params)
-            {
-              source: name,
-              url: url,
-              data: response.body,
-              status: response.status,
-              success: response.success?
-            }
+            { source: name, url: url, data: response.body, status: response.status, success: response.success? }
           rescue StandardError => e
             url = endpoint.is_a?(Hash) ? (endpoint[:url] || endpoint["url"]).to_s : endpoint.to_s
             name = endpoint.is_a?(Hash) ? ((endpoint[:name] || endpoint["name"]) || url).to_s : url
