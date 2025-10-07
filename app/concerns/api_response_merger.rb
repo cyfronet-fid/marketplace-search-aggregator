@@ -18,14 +18,14 @@ module ApiResponseMerger
         else
           %w[results offers].each do |key|
             merged[key] ||= []
-            merged[key].concat(Array(data[key] || data[key&.to_sym])) if data.is_a?(Hash) && (data[key] || data[key&.to_sym])
+            if data.is_a?(Hash) && (data[key] || data[key&.to_sym])
+              merged[key].concat(Array(data[key] || data[key&.to_sym]))
+            end
           end
         end
         # Merge facets from parsed[:facets] / parsed["facets"] or nested in data[:facets] / data["facets"]
         new_facets = nil
-        if data.is_a?(Hash)
-          new_facets = data[:facets] || data["facets"]
-        end
+        new_facets = data[:facets] || data["facets"] if data.is_a?(Hash)
         new_facets ||= parsed[:facets] || parsed["facets"]
         merge_facets!(merged["facets"], new_facets) if new_facets.is_a?(Hash)
 

@@ -10,9 +10,11 @@ development:
   queue:
     <<: *default
     database: db/development-queue.sqlite3
+    migrations_paths: db/queue_migrate
   cache:
     <<: *default
-    database: db/production-queue.sqlite3
+    database: db/development-cache.sqlite3
+    migrations_paths: db/cache_migrate
 
 test:
   primary:
