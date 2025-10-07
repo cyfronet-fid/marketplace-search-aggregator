@@ -3,10 +3,11 @@
 module ApiResponseMerger
   extend ActiveSupport::Concern
 
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def merge_api_responses(*responses)
     responses
       .compact
-      .reduce(base_structure) do |merged, response|
+      .each_with_object(base_structure) do |response, merged|
         parsed = parse_json_response(response)
         data = parsed[:data] || parsed["data"] || {}
 
@@ -49,6 +50,7 @@ module ApiResponseMerger
         merged
       end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   private
 
@@ -60,6 +62,7 @@ module ApiResponseMerger
     {}
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def merge_facets!(accumulator, new_facets)
     return accumulator unless new_facets
 
@@ -70,10 +73,10 @@ module ApiResponseMerger
 
       items.each do |item|
         if item.is_a?(Hash)
-          eid = (item["eid"] || item[:eid])
-          name = (item["name"] || item[:name])
+          eid = item["eid"] || item[:eid]
+          name = item["name"] || item[:name]
           count = (item["count"] || item[:count] || 0).to_i
-          children = (item["children"] || item[:children]) || []
+          children = item["children"] || item[:children] || []
         else
           eid = nil
         end
@@ -87,7 +90,7 @@ module ApiResponseMerger
           existing["name"] = existing["name"] || existing[:name] || name
           existing["eid"] = existing["eid"] || existing[:eid] || eid
           # Preserve existing children if present; otherwise adopt incoming children
-          existing_children = (existing["children"] || existing[:children] || [])
+          existing_children = existing["children"] || existing[:children] || []
           incoming_children = children.is_a?(Array) ? children : []
           existing["children"] = existing_children.any? ? existing_children : incoming_children
         else
@@ -96,11 +99,12 @@ module ApiResponseMerger
       end
 
       # Sort the group facets by count descending as required
-      accumulator[group].sort_by! { |i| -((i["count"] || i[:count] || 0).to_i) }
+      accumulator[group].sort_by! { |i| -(i["count"] || i[:count] || 0).to_i }
     end
 
     accumulator
   end
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   def base_structure
     {

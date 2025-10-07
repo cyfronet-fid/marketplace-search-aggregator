@@ -40,7 +40,7 @@ RUN bundle install && \
     bundle exec bootsnap precompile --gemfile
 
 # Ensure database directory and production SQLite file exist in the image so a Docker volume can be initialized with proper ownership
-RUN mkdir -p db && touch db/production.sqlite3
+RUN mkdir -p db && touch db/production.sqlite3 && touch db/production-cache.sqlite3 && touch db/production-queue.sqlite3
 
 # Copy application code
 COPY . .

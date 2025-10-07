@@ -32,6 +32,7 @@ class DataAggregatorService
     Rails.cache.fetch(cache_key) { fetch_and_merge_all_data }
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def cache_key
     endpoints_norm =
       @endpoints
@@ -61,6 +62,7 @@ class DataAggregatorService
     version = "v1"
     "data_aggregator:#{version}:#{Digest::SHA256.hexdigest(JSON.generate(payload))}"
   end
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   def fetch_and_merge_all_data
     responses = fetch_all_endpoints
@@ -105,17 +107,16 @@ class DataAggregatorService
     threads =
       @endpoints.map do |endpoint|
         Thread.new do
-          begin
-            api_params = @params.except(:page, "page", :per_page, "per_page").merge(per_page: 10_000)
-            url = endpoint.is_a?(Hash) ? (endpoint[:url] || endpoint["url"]).to_s : endpoint.to_s
-            name = endpoint.is_a?(Hash) ? ((endpoint[:name] || endpoint["name"]) || url).to_s : url
-            response = @http_client.get(url, api_params)
-            { source: name, url: url, data: response.body, status: response.status, success: response.success? }
-          rescue StandardError => e
-            url = endpoint.is_a?(Hash) ? (endpoint[:url] || endpoint["url"]).to_s : endpoint.to_s
-            name = endpoint.is_a?(Hash) ? ((endpoint[:name] || endpoint["name"]) || url).to_s : url
-            { source: name, url: url, data: nil, error: e.message, success: false }
-          end
+          api_params = @params.except(:page, "page", :per_page, "per_page").merge(per_page: 10_000)
+          url = endpoint.is_a?(Hash) ? (endpoint[:url] || endpoint["url"]).to_s : endpoint.to_s
+          url += "api/v1/search/services"
+          name = endpoint.is_a?(Hash) ? ((endpoint[:name] || endpoint["name"]) || url).to_s : url
+          response = @http_client.get(url, api_params)
+          { source: name, url: url, data: response.body, status: response.status, success: response.success? }
+        rescue StandardError => e
+          url = endpoint.is_a?(Hash) ? (endpoint[:url] || endpoint["url"]).to_s : endpoint.to_s
+          name = endpoint.is_a?(Hash) ? ((endpoint[:name] || endpoint["name"]) || url).to_s : url
+          { source: name, url: url, data: nil, error: e.message, success: false }
         end
       end
 

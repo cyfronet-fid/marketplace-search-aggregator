@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitSolidCache < ActiveRecord::Migration[7.2]
   def change
     create_table "solid_cache_entries", force: :cascade do |t|

@@ -39,7 +39,7 @@ Rails.application.configure do
   # Log to STDOUT with the current request id as a default log tag.
   config.log_tags = [ :request_id ]
   logger = ActiveSupport::Logger.new($stdout)
-  logger.formatter = ::Logger::Formatter.new
+  logger.formatter = Logger::Formatter.new
   config.logger = ActiveSupport::TaggedLogging.new(logger)
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
@@ -53,6 +53,7 @@ Rails.application.configure do
 
   # Replace the default in-process memory cache store with a durable alternative.
   config.cache_store = :solid_cache_store
+  config.solid_cache.connects_to = { database: { writing: :cache } }
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
   config.active_job.queue_adapter = :solid_queue

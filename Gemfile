@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -20,18 +22,18 @@ gem "faraday-follow_redirects"
 # JSON processing
 gem "oj"
 
-# Background jobs (optional)
-gem "sidekiq"
-
 group :development, :test do
   gem "byebug", platforms: [:mri, :windows]
-  gem "rspec-rails"
   gem "factory_bot_rails"
   gem "dotenv-rails"
+  gem "rubocop"
+  gem "brakeman"
+  gem "prettier", require: false
+  gem "overcommit", require: false
+  gem "rubocop-rails"
 end
 
 group :development do
   gem "listen", "~> 3.3"
   gem "spring"
-  gem "prettier", require: false
 end

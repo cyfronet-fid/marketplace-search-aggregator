@@ -6,7 +6,7 @@ class Api::V1::ServicesController < ApplicationController
   def index
     aggregator = DataAggregatorService.new(@endpoints, params)
     result = aggregator.aggregate_data
-    result["nodes"] = @default_endpoints
+    result["nodes"] = @all_nodes
     render json: { status: "success" }.merge(result)
   rescue StandardError => e
     puts e
@@ -32,13 +32,20 @@ class Api::V1::ServicesController < ApplicationController
   private
 
   def set_endpoints
-    @default_endpoints = [
-      { name: "CESSDA", url: "http://localhost:5000/api/v1/search/services" },
-      { name: "NI4OS", url: "http://marketplace-2.docker-fid.grid.cyf-kr.edu.pl/api/v1/search/services" }
-    ]
-    return @endpoints = @default_endpoints unless params[:nodes].present?
+    registry = NodeRegistryService.new
+    @all_nodes = registry.endpoints
+    # fallback already handled inside service, but keep a minimal guard
+    @all_nodes = registry.default_endpoints if @all_nodes.blank?
+
     if params[:nodes].present?
-      @endpoints = @default_endpoints.select { |endpoint| params[:nodes].include?(endpoint[:name]) }
+      names = Array(params[:nodes])
+      @endpoints =
+        @all_nodes.select do |endpoint|
+          name = endpoint[:name] || endpoint["name"]
+          names.include?(name)
+        end
+    else
+      @endpoints = @all_nodes
     end
   end
 end

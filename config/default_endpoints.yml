@@ -1,0 +1,10 @@
+default:
+  - name: "CESSDA"
+    pid: "21.T15999/CESSDA"
+    url: "marketplace-staging.cessda.eu/"
+  - name: "EOSC-Beyond"
+    pid: "21.T15999/EOSC-BEYOND"
+    url: "https://marketplace.sandbox.eosc-beyond.eu/"
+  - name: "NI4OS-EUROPE"
+    pid: "21.T15999/NI4OS-EUROPE"
+    url: "https://marketplace.mrezhi.net/"
