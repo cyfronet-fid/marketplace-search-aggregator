@@ -37,3 +37,4 @@ group :development do
   gem "listen", "~> 3.3"
   gem "spring"
 end
+gem "solid_cable", "~> 3.0"

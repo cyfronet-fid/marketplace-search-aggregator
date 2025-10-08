@@ -14,9 +14,9 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 # Rails app lives here
 WORKDIR /rails
 
-# Install base packages
+# Install base packages (include SQLite runtime)
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips libsqlite3-0 && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
@@ -28,9 +28,9 @@ ENV RAILS_ENV="production" \
 # Throw-away build stage to reduce size of final image
 FROM base AS build
 
-# Install packages needed to build gems
+# Install packages needed to build gems (SQLite dev headers)
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev pkg-config && \
+    apt-get install --no-install-recommends -y build-essential git libsqlite3-dev libyaml-dev pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install application gems
@@ -40,7 +40,11 @@ RUN bundle install && \
     bundle exec bootsnap precompile --gemfile
 
 # Ensure database directory and production SQLite file exist in the image so a Docker volume can be initialized with proper ownership
-RUN mkdir -p db && touch db/production.sqlite3 && touch db/production-cache.sqlite3 && touch db/production-queue.sqlite3
+RUN mkdir -p db && \
+    touch db/production.sqlite3 && \
+    touch db/production-cache.sqlite3 && \
+    touch db/production-queue.sqlite3 && \
+    touch db/production-cable.sqlite3 &&
 
 # Copy application code
 COPY . .
