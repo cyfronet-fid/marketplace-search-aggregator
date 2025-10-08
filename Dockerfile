@@ -44,7 +44,7 @@ RUN mkdir -p db && \
     touch db/production.sqlite3 && \
     touch db/production-cache.sqlite3 && \
     touch db/production-queue.sqlite3 && \
-    touch db/production-cable.sqlite3 &&
+    touch db/production-cable.sqlite3
 
 # Copy application code
 COPY . .
