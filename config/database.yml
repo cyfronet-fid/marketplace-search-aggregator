@@ -23,9 +23,11 @@ test:
   queue:
     <<: *default
     database: db/test-queue.sqlite3
+    migrations_paths: db/queue_migrate
   cache:
     <<: *default
-    database: db/production-queue.sqlite3
+    database: db/test-cache.sqlite3
+    migrations_paths: db/cache_migrate
 
 production:
   primary:
@@ -34,6 +36,8 @@ production:
   queue:
     <<: *default
     database: db/production-queue.sqlite3
+    migrations_paths: db/queue_migrate
   cache:
     <<: *default
-    database: db/production-queue.sqlite3
+    database: db/production-cache.sqlite3
+    migrations_paths: db/cache_migrate

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/AbcSize
 class InitSolidQueue < ActiveRecord::Migration[7.2]
   def change
     create_table "solid_queue_blocked_executions", force: :cascade do |t|
@@ -129,3 +132,4 @@ class InitSolidQueue < ActiveRecord::Migration[7.2]
     add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   end
 end
+# rubocop:enable Metrics/AbcSize

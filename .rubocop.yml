@@ -1,8 +1,113 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+inherit_gem:
+  prettier: rubocop.yml
+
+AllCops:
+  TargetRubyVersion: 3.3.6
+  NewCops: enable
+  SuggestExtensions: true
+  Exclude:
+    - "**/tmp/**/*"
+    - "**/vendor/**/*"
+    - "bin/**/*"
+    - "db/schema.rb"
+    - "db/cache_schema.rb"
+    - "db/queue_schema.rb"
+
+Style/Documentation:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
 
 # Overwrite or add rules to create your own house style
 #
 # # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: false
+
+Metrics/BlockNesting:
+  Enabled: true
+
+Metrics/PerceivedComplexity:
+  Enabled: true
+  Max: 15
+
+Metrics/CyclomaticComplexity:
+  Enabled: true
+  Max: 15
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+# Not necessary to enforce this, both forms are useful sometimes.
+Style/ConditionalAssignment:
+  Enabled: false
+
+# We don't really use such big numbers outside of port configuration, where it's counterproductive.
+Style/NumericLiterals:
+  Enabled: false
+
+# We didn't order gems from the beginning. Turning this on would mess history up.
+Bundler/OrderedGems:
+  Enabled: false
+
+# Turn off due conflict with prettier
+Style/LineEndConcatenation:
+  Enabled: false
+
+Style/InverseMethods:
+  Enabled: true
+  InverseMethods:
+    :present?: :blank?
+
+# We do it a lot in HAMLs which are not auto-correctable
+Style/FormatString:
+  Enabled: false
+
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+# These four force very small files, we don't really want that
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: true
+  Max: 60
+
+Style/HashAsLastArrayItem:
+  Enabled: true
+  EnforcedStyle: no_braces
+
+Style/FormatStringToken:
+  Enabled: true
+  EnforcedStyle: template
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: either
+
+Metrics/ParameterLists:
+  Enabled: true
+  CountKeywordArgs: false
+
+Naming/PredicatePrefix:
+  Enabled: true
+  AllowedMethods: has_attribute?
+
+Naming/PredicateMethod:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - "spec/**/*"

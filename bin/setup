@@ -12,7 +12,16 @@ FileUtils.chdir APP_ROOT do
   # This script is idempotent, so that you can run it at any time and get an expectable outcome.
   # Add necessary setup steps to this file.
 
+  puts "== Setting git messages =="
+  system! "git config commit.template ./.gitmessage"
+
+  puts "== Installing git-hooks =="
+  system! "overcommit --install"
+  system! "overcommit --sign"
+
   puts "== Installing dependencies =="
+  system! "gem install bundler --conservative"
+  system! "gem install foreman --conservative"
   system("bundle check") || system!("bundle install")
 
   # puts "\n== Copying sample files =="

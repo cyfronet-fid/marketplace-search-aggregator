@@ -100,7 +100,7 @@ builder:
 #     port: "127.0.0.1:3306:3306"
 #     env:
 #       clear:
-#         MYSQL_ROOT_HOST: '%'
+#         MYSQL_ROOT_HOST: "%"
 #       secret:
 #         - MYSQL_ROOT_PASSWORD
 #     files:
