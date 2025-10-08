@@ -40,11 +40,11 @@ RUN bundle install && \
     bundle exec bootsnap precompile --gemfile
 
 # Ensure database directory and production SQLite file exist in the image so a Docker volume can be initialized with proper ownership
-RUN mkdir -p db && \
-    touch db/production.sqlite3 && \
-    touch db/production-cache.sqlite3 && \
-    touch db/production-queue.sqlite3 && \
-    touch db/production-cable.sqlite3
+RUN mkdir -p storage && \
+    touch storage/production.sqlite3 && \
+    touch storage/production-cache.sqlite3 && \
+    touch storage/production-queue.sqlite3 && \
+    touch storage/production-cable.sqlite3
 
 # Copy application code
 COPY . .
@@ -73,7 +73,7 @@ RUN groupadd --system --gid 1000 rails && \
     chown -R rails:rails db log storage tmp config
 
 # Declare db as a volume so that db/production.sqlite3 persists between container restarts
-VOLUME ["/rails/db"]
+VOLUME ["/rails/storage"]
 
 USER 1000:1000
 
