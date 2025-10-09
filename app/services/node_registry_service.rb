@@ -124,7 +124,7 @@ class NodeRegistryService
     path = ENV.fetch("STATIC_CONFIG_FILE", Rails.root.join("config", "default_endpoints.yml"))
     raise "Default endpoints file not found at #{path}" unless File.exist?(path)
 
-    raw = YAML.safe_load_file(File.read(path), aliases: true)
+    raw = YAML.safe_load_file(path, aliases: true)
 
     list =
       case raw
