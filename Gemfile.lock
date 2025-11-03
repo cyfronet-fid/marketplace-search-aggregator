@@ -134,7 +134,7 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    json (2.15.1)
+    json (2.15.2)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     listen (3.9.0)
@@ -188,7 +188,7 @@ GEM
       iniparse (~> 1.4)
       rexml (>= 3.3.9)
     parallel (1.27.0)
-    parser (3.3.9.0)
+    parser (3.3.10.0)
       ast (~> 2.4.1)
       racc
     pp (0.6.3)
@@ -199,7 +199,7 @@ GEM
       syntax_tree-rbs (>= 0.2.0)
     prettier_print (1.2.1)
     prettyprint (0.2.0)
-    prism (1.5.1)
+    prism (1.6.0)
     psych (5.2.6)
       date
       stringio
@@ -262,7 +262,7 @@ GEM
     reline (0.6.2)
       io-console (~> 0.5)
     rexml (3.4.4)
-    rubocop (1.81.1)
+    rubocop (1.81.7)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
